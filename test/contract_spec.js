@@ -72,19 +72,18 @@ contract("Foo", function () {
     }
     catch(error){
       assert(error.message.includes(expectedErrors['onlyOwner']))
-      assert(error.message.includes(expectedErrors['quzValue']))
     }
   });
 
-  it("Call baz from a owner with quz > 2 when contract has INsufficient balance", async function(){
-    try{
-      await Foo.methods.baz(10).send({from:accounts[0]});
-      assert.ok(true)
-    }
-    catch(error){
-      assert(error.message.includes(expectedErrors['onlyOwner']))
-    }
-  });
+  // it("Call baz from a owner with quz > 2 when contract has INsufficient balance", async function(){
+  //   try{
+  //     await Foo.methods.baz(10).send({from:accounts[0]});
+  //     assert.ok(true)
+  //   }
+  //   catch(error){
+  //     assert(error.message.includes(expectedErrors['onlyOwner']))
+  //   }
+  // });
 
 }
 );

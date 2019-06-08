@@ -39,21 +39,19 @@
       "inputs": [],
       "payable": true,
       "stateMutability": "payable",
-      "type": "constructor",
-      "signature": "constructor"
+      "type": "constructor"
     }
   ],
   "filename": "D:\\Perso\\STUDY\\Block\\GBC\\EmbarkDesignLab\\.embark\\contracts\\Foo.sol",
   "originalFilename": "contracts\\Foo.sol",
   "path": "D:\\Perso\\STUDY\\Block\\GBC\\EmbarkDesignLab\\contracts\\Foo.sol",
-  "gas": 205031,
-  "gasPrice": "20000000000",
+  "gas": "auto",
   "type": "file",
   "deploy": true,
   "_gasLimit": 6000000,
   "error": false,
   "deploymentAccount": "0xc58AC603aBD4c29a0e35176C8334B5dfa01B5B93",
   "realArgs": [],
-  "deployedAddress": "0xBE3b2193bACB2e473d588F8490D4794169BB626A",
-  "transactionHash": "0xec6dd2f1d75f742a2ce89a8ffae01d1c7c5198da9378c0f21ba387814b85e058"
+  "address": "0xBE3b2193bACB2e473d588F8490D4794169BB626A",
+  "deployedAddress": "0xBE3b2193bACB2e473d588F8490D4794169BB626A"
 }
