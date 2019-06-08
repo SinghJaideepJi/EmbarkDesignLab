@@ -1,8 +1,14 @@
 // /*global contract, config, it, assert*/
-/*
-const SimpleStorage = require('Embark/contracts/SimpleStorage');
+
+const Foo = require('Embark/contracts/Foo');
 
 let accounts;
+
+let expectedErrors = {
+  'onlyOwner':"require owner = msg.sender",
+  'quzValue':"quz must be > 2"
+};
+
 
 // For documentation please see https://embark.status.im/docs/contracts_testing.html
 config({
@@ -13,31 +19,72 @@ config({
   //  ]
   //},
   contracts: {
-    "SimpleStorage": {
-      args: [100]
+    "Foo": {
+      // args: [100]
     }
   }
 }, (_err, web3_accounts) => {
   accounts = web3_accounts
 });
 
-contract("SimpleStorage", function () {
+contract("Foo", function () {
   this.timeout(0);
 
-  it("should set constructor value", async function () {
-    let result = await SimpleStorage.methods.storedData().call();
-    assert.strictEqual(parseInt(result, 10), 100);
+  it("Foo was deployed", async function(){
+    let address = Foo.options.address;
+    assert.ok(address) // has a value and not null
   });
 
-  it("set storage value", async function () {
-    await SimpleStorage.methods.set(150).send();
-    let result = await SimpleStorage.methods.get().call();
-    assert.strictEqual(parseInt(result, 10), 150);
+  it("Call baz from a owner with quz > 2 when contract has sufficient balance", async function(){
+    try{
+      await Foo.methods.baz(10).send({from:accounts[0]});
+      assert.ok(true)
+    }
+    catch(error){
+      assert(true)
+    }
   });
 
-  it("should have account with balance", async function() {
-    let balance = await web3.eth.getBalance(accounts[0]);
-    assert.ok(parseInt(balance, 10) > 0);
+  it("Call baz from a owner with quz < 2", async function(){
+    try{
+      await Foo.methods.baz(1).send({from:accounts[0]});
+      assert.ok(false)
+    }
+    catch(error){
+      assert(error.message.includes(expectedErrors['quzValue']))
+    }
   });
+
+  it("Call baz from a NON-owner with quz > 2", async function(){
+    try{
+      await Foo.methods.baz(10).send({from:accounts[1]});
+      assert.ok(false)
+    }
+    catch(error){
+      assert(error.message.includes(expectedErrors['onlyOwner']))
+    }
+  });
+
+  it("Call baz from a NON-owner with quz < 2", async function(){
+    try{
+      await Foo.methods.baz(1).send({from:accounts[1]});
+      assert.ok(false)
+    }
+    catch(error){
+      assert(error.message.includes(expectedErrors['onlyOwner']))
+      assert(error.message.includes(expectedErrors['quzValue']))
+    }
+  });
+
+  it("Call baz from a owner with quz > 2 when contract has INsufficient balance", async function(){
+    try{
+      await Foo.methods.baz(10).send({from:accounts[0]});
+      assert.ok(true)
+    }
+    catch(error){
+      assert(error.message.includes(expectedErrors['onlyOwner']))
+    }
+  });
+
 }
-*/
+);

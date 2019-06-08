@@ -4,7 +4,7 @@ module.exports = {
     // Blockchain node to deploy the contracts
     deployment: {
       host: "localhost", // Host of the blockchain node
-      port: 8546, // Port of the blockchain node
+      port: 8555, // Port of the blockchain node
       type: "ws" // Type of connection (ws or rpc),
       // Accounts to use instead of the default account to populate your wallet.
       // The order here corresponds to the order of `web3.eth.getAccounts`, so the first one is the `defaultAccount`
