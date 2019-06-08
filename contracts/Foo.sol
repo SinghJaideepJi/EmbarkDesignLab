@@ -1,7 +1,7 @@
 pragma solidity ^0.5.4;
 
 contract Foo {
-  address owner;
+  address payable owner;
   uint256 bar;
   modifier onlyOwner() {
     require(owner == msg.sender, "require owner = msg.sender");
