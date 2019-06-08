@@ -16,4 +16,12 @@ contract Foo {
     require(quz > 2, "quz must be > 2");
     owner.transfer(quz); 
   }
+
+  function getBalance() public view returns(uint256){
+      return address(this).balance;
+  }
+
+  function deposit() public payable{
+      
+  }
 }

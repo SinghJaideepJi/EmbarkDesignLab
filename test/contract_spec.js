@@ -33,19 +33,69 @@ contract("Foo", function () {
   it("Foo was deployed", async function(){
     let address = Foo.options.address;
     assert.ok(address) // has a value and not null
+    // console.log(await Foo.methods.getBalance().call())
   });
 
   it("Call baz from a owner with quz > 2 when contract has sufficient balance", async function(){
     try{
+      await Foo.methods.deposit().send({from:accounts[0],value:10});
+      // console.log(await Foo.methods.getBalance().call())
       await Foo.methods.baz(10).send({from:accounts[0]});
       assert.ok(true)
     }
     catch(error){
-      assert(true)
+      // console.log(error)
+      assert(false)
     }
   });
 
-  it("Call baz from a owner with quz < 2", async function(){
+  it("Call baz from a owner with quz < 2 when contract has sufficient balance", async function(){
+    try{
+      await Foo.methods.deposit().send({from:accounts[0],value:1});
+      await Foo.methods.baz(1).send({from:accounts[0]});
+      assert.ok(false)
+    }
+    catch(error){
+      assert(error.message.includes(expectedErrors['quzValue']))
+    }
+  });
+
+  it("Call baz from a NON-owner with quz > 2 when contract has sufficient balance", async function(){
+    try{
+      await Foo.methods.deposit().send({from:accounts[0],value:10});
+      await Foo.methods.baz(10).send({from:accounts[1]});
+      assert.ok(false)
+    }
+    catch(error){
+      assert(error.message.includes(expectedErrors['onlyOwner']))
+    }
+  });
+
+  it("Call baz from a NON-owner with quz < 2 when contract has sufficient balance", async function(){
+    try{
+      await Foo.methods.deposit().send({from:accounts[0],value:1});
+      await Foo.methods.baz(1).send({from:accounts[1]});
+      assert.ok(false)
+    }
+    catch(error){
+      // console.log(error)
+      assert(error.message.includes(expectedErrors['onlyOwner']))
+    }
+  });
+
+  it("Call baz from a owner with quz > 2 when contract has INsufficient balance", async function(){
+    try{
+      await Foo.methods.baz(30).send({from:accounts[0]});
+      assert.ok(false)
+    }
+    catch(error){
+      // console.log(await Foo.methods.getBalance().call())
+      // console.log(error.message)
+      assert(error.message == 'VM Exception while processing transaction: revert')
+    }
+  });
+
+  it("Call baz from a owner with quz < 2 when contract has INsufficient balance", async function(){
     try{
       await Foo.methods.baz(1).send({from:accounts[0]});
       assert.ok(false)
@@ -55,7 +105,7 @@ contract("Foo", function () {
     }
   });
 
-  it("Call baz from a NON-owner with quz > 2", async function(){
+  it("Call baz from a NON-owner with quz > 2 when contract has INsufficient balance", async function(){
     try{
       await Foo.methods.baz(10).send({from:accounts[1]});
       assert.ok(false)
@@ -65,7 +115,7 @@ contract("Foo", function () {
     }
   });
 
-  it("Call baz from a NON-owner with quz < 2", async function(){
+  it("Call baz from a NON-owner with quz < 2 when contract has INsufficient balance", async function(){
     try{
       await Foo.methods.baz(1).send({from:accounts[1]});
       assert.ok(false)
@@ -74,16 +124,6 @@ contract("Foo", function () {
       assert(error.message.includes(expectedErrors['onlyOwner']))
     }
   });
-
-  // it("Call baz from a owner with quz > 2 when contract has INsufficient balance", async function(){
-  //   try{
-  //     await Foo.methods.baz(10).send({from:accounts[0]});
-  //     assert.ok(true)
-  //   }
-  //   catch(error){
-  //     assert(error.message.includes(expectedErrors['onlyOwner']))
-  //   }
-  // });
 
 }
 );
